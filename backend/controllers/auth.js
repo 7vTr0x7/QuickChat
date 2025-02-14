@@ -52,3 +52,19 @@ export const login = async (req, res) => {
       .json({ success: false, message: "Failed to register user." });
   }
 };
+
+export const logout = async (req, res) => {
+  try {
+    res
+      .status(201)
+      .cookie("token", "", {
+        expires: new Date(Date.now()),
+      })
+      .json({
+        success: true,
+        message: "Logged out",
+      });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Failed to logout" });
+  }
+};
