@@ -20,12 +20,6 @@ const UserSchema = new mongoose.Schema(
       required: true,
       select: false,
     },
-    friends: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "QuickChatUser",
-      },
-    ],
   },
   { timestamps: true }
 );

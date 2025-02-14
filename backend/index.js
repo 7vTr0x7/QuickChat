@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import { config } from "dotenv";
 import { initializeDatabase } from "./db/db.connection.js";
 import authRoutes from "./routes/auth.js";
+import userRoutes from "./routes/user.js";
 
 config();
 const app = express();
@@ -14,6 +15,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use("/api/auth/user", authRoutes);
+app.use("/api/user", userRoutes);
 
 initializeDatabase();
 
