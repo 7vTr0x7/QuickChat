@@ -5,7 +5,7 @@ import { sendCookie } from "../utils/features.js";
 
 export const register = async (req, res) => {
   try {
-    const { userName, email, password } = req.body;
+    const { userName, imageUrl, email, password } = req.body;
     let user = await User.findOne({ email });
 
     if (user) {
@@ -14,7 +14,12 @@ export const register = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    user = await User.create({ userName, email, password: hashedPassword });
+    user = await User.create({
+      userName,
+      email,
+      imageUrl,
+      password: hashedPassword,
+    });
 
     if (user) {
       sendCookie(user, res, "Register Successfully");
