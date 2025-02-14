@@ -1,11 +1,9 @@
 import mongoose from "mongoose";
 import "dotenv/config";
 
-const mongoUrl = process.env.MONGODB;
-
 export const initializeDatabase = async () => {
   try {
-    const connection = await mongoose.connect(mongoUrl);
+    const connection = await mongoose.connect(process.env.MONGODB);
     if (connection) {
       console.log("Connected to mongoDB");
     }
