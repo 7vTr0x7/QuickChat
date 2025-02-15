@@ -40,7 +40,7 @@ const server = app.listen(PORT, () => {
 
 const io = new Server(server, {
   cors: {
-    origin: urls.split(","),
+    origin: urls,
     credentials: true,
   },
 });
