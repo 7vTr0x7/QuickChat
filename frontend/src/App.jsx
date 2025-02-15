@@ -1,7 +1,20 @@
-import React from "react";
+import { Toaster } from "react-hot-toast";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 const App = () => {
-  return <div>App</div>;
+  return (
+    <div className="bg-black h-screen">
+      <Router>
+        <Toaster />
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Routes>
+      </Router>
+    </div>
+  );
 };
 
 export default App;
