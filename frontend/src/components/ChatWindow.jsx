@@ -6,7 +6,7 @@ const ChatWindow = ({ selectedUser, user }) => {
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
   const apiUrl = import.meta.env.VITE_API_URL;
-  const socket = io(apiUrl);
+  const socket = io(apiUrl, { withCredentials: true });
 
   useEffect(() => {
     if (!user) return;
@@ -24,7 +24,8 @@ const ChatWindow = ({ selectedUser, user }) => {
 
       try {
         const { data } = await axios.get(
-          `${apiUrl}/api/chat/${user._id}/${selectedUser._id}`
+          `${apiUrl}/api/chat/${user._id}/${selectedUser._id}`,
+          { withCredentials: true }
         );
         setMessages(data.messages);
       } catch (error) {
@@ -49,11 +50,15 @@ const ChatWindow = ({ selectedUser, user }) => {
     if (!message.trim() || !user || !selectedUser) return;
 
     try {
-      const { data } = await axios.post(`${apiUrl}/api/chat/send`, {
-        sender: user._id,
-        receiver: selectedUser._id,
-        message,
-      });
+      const { data } = await axios.post(
+        `${apiUrl}/api/chat/send`,
+        {
+          sender: user._id,
+          receiver: selectedUser._id,
+          message,
+        },
+        { withCredentials: true }
+      );
 
       socket.emit("sendMessage", {
         sender: user._id,
