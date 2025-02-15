@@ -1,4 +1,4 @@
-import { Toaster } from "react-hot-toast";
+import { useState, useEffect } from "react";
 import {
   Route,
   BrowserRouter as Router,
@@ -9,9 +9,14 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Chat from "./pages/Chat";
 import ProtectedRoutes from "./utils/ProtectedRoutes";
+import { Toaster } from "react-hot-toast";
 
 const App = () => {
-  const token = localStorage.getItem("token");
+  const [token, setToken] = useState("");
+
+  useEffect(() => {
+    setToken(localStorage.getItem("token"));
+  }, []);
 
   return (
     <div className="bg-black h-screen">

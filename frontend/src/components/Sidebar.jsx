@@ -24,7 +24,10 @@ const Sidebar = ({
       if (response.ok) {
         toast.success("Logout successful!");
         localStorage.removeItem("token");
-        navigate("/login");
+
+        setTimeout(() => {
+          navigate("/login", { replace: true });
+        }, 500);
       } else {
         toast.error("Logout failed. Please try again.");
       }
