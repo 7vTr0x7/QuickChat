@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 const Sidebar = ({
@@ -10,18 +11,26 @@ const Sidebar = ({
   const apiUrl = import.meta.env.VITE_API_URL;
 
   const handleLogout = async () => {
+    const loadingToast = toast.loading("Logging out...");
+
     try {
       const response = await fetch(`${apiUrl}/api/auth/user/logout`, {
         method: "POST",
         credentials: "include",
       });
+
+      toast.dismiss(loadingToast);
+
       if (response.ok) {
+        toast.success("Logout successful!");
         localStorage.removeItem("token");
         navigate("/login");
       } else {
-        console.error("Logout failed");
+        toast.error("Logout failed. Please try again.");
       }
     } catch (error) {
+      toast.dismiss(loadingToast);
+      toast.error("Error logging out. Please check your connection.");
       console.error("Error logging out:", error);
     }
   };
