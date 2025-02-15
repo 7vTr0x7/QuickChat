@@ -6,6 +6,7 @@ const ChatWindow = ({ selectedUser, user }) => {
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
   const apiUrl = import.meta.env.VITE_API_URL;
+
   const socket = io(apiUrl, { withCredentials: true });
 
   useEffect(() => {
@@ -13,7 +14,12 @@ const ChatWindow = ({ selectedUser, user }) => {
 
     socket.emit("join", user._id);
 
+    socket.on("receiveMessage", (newMessage) => {
+      setMessages((prevMessages) => [...prevMessages, newMessage]);
+    });
+
     return () => {
+      socket.off("receiveMessage");
       socket.disconnect();
     };
   }, [user]);
@@ -36,16 +42,6 @@ const ChatWindow = ({ selectedUser, user }) => {
     fetchChats();
   }, [selectedUser, user]);
 
-  useEffect(() => {
-    socket.on("receiveMessage", (newMessage) => {
-      setMessages((prevMessages) => [...prevMessages, newMessage]);
-    });
-
-    return () => {
-      socket.off("receiveMessage");
-    };
-  }, []);
-
   const sendMessage = async () => {
     if (!message.trim() || !user || !selectedUser) return;
 
@@ -60,11 +56,7 @@ const ChatWindow = ({ selectedUser, user }) => {
         { withCredentials: true }
       );
 
-      socket.emit("sendMessage", {
-        sender: user._id,
-        receiver: selectedUser._id,
-        message,
-      });
+      socket.emit("sendMessage", data.chat);
 
       setMessages((prevMessages) => [...prevMessages, data.chat]);
       setMessage("");
@@ -77,12 +69,12 @@ const ChatWindow = ({ selectedUser, user }) => {
     <div className="flex flex-col flex-1 h-screen bg-[#121212]">
       <div className="flex items-center bg-[#1f1f1f] p-4 border-b border-gray-700 shadow-md">
         <img
-          src={selectedUser.imageUrl}
-          alt={selectedUser.userName}
+          src={selectedUser?.imageUrl || "/default-avatar.png"}
+          alt={selectedUser?.userName || "User"}
           className="w-12 h-12 rounded-full border-2 border-green-500 mr-3"
         />
         <p className="text-white text-lg font-semibold">
-          {selectedUser.userName}
+          {selectedUser?.userName || "User"}
         </p>
       </div>
 
