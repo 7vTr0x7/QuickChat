@@ -13,12 +13,12 @@ config();
 const app = express();
 app.use(express.json());
 
-
 const urls = process.env.FRONTEND_URL.split(",");
 
 app.use(
   cors({
-    origin: urntials: true,
+    origin: urls,
+    credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
@@ -40,7 +40,7 @@ const server = app.listen(PORT, () => {
 
 const io = new Server(server, {
   cors: {
-    origin: urls,
+    origin: urls.split(","),
     credentials: true,
   },
 });
