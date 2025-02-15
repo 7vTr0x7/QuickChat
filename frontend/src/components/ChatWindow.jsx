@@ -1,10 +1,11 @@
+import { useEffect, useState, useRef } from "react";
 import axios from "axios";
-import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 
 const ChatWindow = ({ selectedUser, user }) => {
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
+  const messagesEndRef = useRef(null);
   const apiUrl = import.meta.env.VITE_API_URL;
 
   const socket = io(apiUrl, { withCredentials: true });
@@ -41,6 +42,10 @@ const ChatWindow = ({ selectedUser, user }) => {
 
     fetchChats();
   }, [selectedUser, user]);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   const sendMessage = async () => {
     if (!message.trim() || !user || !selectedUser) return;
@@ -96,6 +101,8 @@ const ChatWindow = ({ selectedUser, user }) => {
             {msg.message}
           </div>
         ))}
+        {/* Invisible div to ensure the last message is always in view */}
+        <div ref={messagesEndRef} />
       </div>
 
       <div className="p-4 bg-[#1f1f1f] flex items-center border-t border-gray-700">
