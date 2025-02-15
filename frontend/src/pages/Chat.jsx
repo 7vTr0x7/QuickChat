@@ -19,9 +19,6 @@ const Chat = () => {
     dispatch(allUsers());
   }, [dispatch]);
 
-  if (loading) return <p className="text-white">Loading users...</p>;
-  if (error) return <p className="text-red-500">Error: {error}</p>;
-
   return (
     <div className="flex h-screen bg-[#121212] text-white">
       <Sidebar setSelectedUser={setSelectedUser} users={filteredUsers} />

@@ -24,9 +24,10 @@ const ChatWindow = ({ selectedUser, user }) => {
 
       try {
         const { data } = await axios.get(
-          `${apiUrl}/api/chat/${user._id}/${selectedUser._id}`,
+          `${apiUrl}/api/chat/messages/${user._id}/${selectedUser._id}`,
           { withCredentials: true }
         );
+        console.log(data);
         setMessages(data.messages);
       } catch (error) {
         console.error("Failed to fetch chats", error.message);
@@ -93,7 +94,7 @@ const ChatWindow = ({ selectedUser, user }) => {
             className={`p-3 max-w-xs rounded-xl shadow-md mb-2 text-white text-lg 
                         ${
                           msg.sender === user._id
-                            ? "bg-green-500 ml-auto"
+                            ? "bg-[#2a2a2a] ml-auto"
                             : "bg-[#2a2a2a]"
                         }
                         `}>
@@ -111,7 +112,7 @@ const ChatWindow = ({ selectedUser, user }) => {
         />
         <button
           onClick={sendMessage}
-          className="ml-3 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-400">
+          className="ml-3 bg-[#2a2a2a] text-white px-4 py-2 rounded-lg ">
           Send
         </button>
       </div>
