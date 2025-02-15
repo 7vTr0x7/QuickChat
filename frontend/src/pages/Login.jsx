@@ -26,6 +26,8 @@ const Login = () => {
     e.preventDefault();
     if (!validateInputs()) return;
 
+    const loadingToast = toast.loading("Logging in...");
+
     try {
       const res = await fetch(`${apiUrl}/api/auth/user/login`, {
         method: "POST",
@@ -35,6 +37,8 @@ const Login = () => {
       });
 
       const data = await res.json();
+      toast.dismiss(loadingToast);
+
       if (data.success) {
         toast.success("Login successful!", { duration: 2000 });
         localStorage.setItem("token", data.token);
@@ -43,6 +47,7 @@ const Login = () => {
         toast.error(data.message);
       }
     } catch (error) {
+      toast.dismiss(loadingToast);
       toast.error("Something went wrong!");
     }
   };

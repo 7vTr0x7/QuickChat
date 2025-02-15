@@ -25,7 +25,6 @@ const Register = () => {
       toast.error("Password must be at least 6 characters long.");
       return false;
     }
-
     if (!imageUrl) {
       toast.error("Please select profile image");
       return false;
@@ -37,16 +36,19 @@ const Register = () => {
     e.preventDefault();
     if (!validateInputs()) return;
 
+    const loadingToast = toast.loading("Registering...");
+
     try {
       const res = await fetch(`${apiUrl}/api/auth/user/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-
         body: JSON.stringify({ userName, imageUrl, email, password }),
       });
 
       const data = await res.json();
+      toast.dismiss(loadingToast);
+
       if (data.success) {
         toast.success("Registration successful!", { duration: 2000 });
         localStorage.setItem("token", data.token);
@@ -55,6 +57,7 @@ const Register = () => {
         toast.error(data.message);
       }
     } catch (error) {
+      toast.dismiss(loadingToast);
       toast.error("Something went wrong!");
     }
   };
