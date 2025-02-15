@@ -1,10 +1,22 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { io } from "socket.io-client";
 
 const ChatWindow = ({ selectedUser, user }) => {
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
   const apiUrl = import.meta.env.VITE_API_URL;
+  const socket = io(apiUrl);
+
+  useEffect(() => {
+    if (!user) return;
+
+    socket.emit("join", user._id);
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [user]);
 
   useEffect(() => {
     const fetchChats = async () => {
@@ -23,11 +35,27 @@ const ChatWindow = ({ selectedUser, user }) => {
     fetchChats();
   }, [selectedUser, user]);
 
+  useEffect(() => {
+    socket.on("receiveMessage", (newMessage) => {
+      setMessages((prevMessages) => [...prevMessages, newMessage]);
+    });
+
+    return () => {
+      socket.off("receiveMessage");
+    };
+  }, []);
+
   const sendMessage = async () => {
     if (!message.trim() || !user || !selectedUser) return;
 
     try {
       const { data } = await axios.post(`${apiUrl}/api/chat/send`, {
+        sender: user._id,
+        receiver: selectedUser._id,
+        message,
+      });
+
+      socket.emit("sendMessage", {
         sender: user._id,
         receiver: selectedUser._id,
         message,
