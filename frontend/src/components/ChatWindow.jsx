@@ -27,7 +27,6 @@ const ChatWindow = ({ selectedUser, user }) => {
           `${apiUrl}/api/chat/messages/${user._id}/${selectedUser._id}`,
           { withCredentials: true }
         );
-        console.log(data);
         setMessages(data.messages);
       } catch (error) {
         console.error("Failed to fetch chats", error.message);
