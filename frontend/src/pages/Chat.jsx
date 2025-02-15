@@ -32,6 +32,7 @@ const Chat = () => {
         users={filteredUsers}
         isSidebarOpen={isSidebarOpen}
         setIsSidebarOpen={setIsSidebarOpen}
+        loading={loading}
       />
       <div className="flex-1 flex flex-col">
         {!selectedUser ? (

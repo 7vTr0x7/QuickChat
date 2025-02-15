@@ -6,6 +6,7 @@ const Sidebar = ({
   users,
   isSidebarOpen,
   setIsSidebarOpen,
+  loading,
 }) => {
   const navigate = useNavigate();
   const apiUrl = import.meta.env.VITE_API_URL;
@@ -53,27 +54,31 @@ const Sidebar = ({
       </div>
 
       <button
-        className="md:hidden absolute top-3 right-2 text-white  p-2 "
+        className="md:hidden absolute top-3 right-2 text-white p-2"
         onClick={() => setIsSidebarOpen(false)}>
         ✖
       </button>
 
-      {(users || []).map((user) => (
-        <div
-          key={user._id}
-          onClick={() => {
-            setSelectedUser(user);
-            setIsSidebarOpen(false);
-          }}
-          className="flex items-center gap-3 p-3 rounded-lg cursor-pointer hover:bg-[#2a2a2a] transition transform hover:scale-105">
-          <img
-            src={user.imageUrl}
-            alt={user.userName}
-            className="w-12 h-12 rounded-full border-2 border-green-400"
-          />
-          <p className="text-white text-lg">{user.userName}</p>
-        </div>
-      ))}
+      {loading ? (
+        <p className="text-gray-400 text-center">Loading users...</p>
+      ) : (
+        (users || []).map((user) => (
+          <div
+            key={user._id}
+            onClick={() => {
+              setSelectedUser(user);
+              setIsSidebarOpen(false);
+            }}
+            className="flex items-center gap-3 p-3 rounded-lg cursor-pointer hover:bg-[#2a2a2a] transition transform hover:scale-105">
+            <img
+              src={user.imageUrl}
+              alt={user.userName}
+              className="w-12 h-12 rounded-full border-2 border-green-400"
+            />
+            <p className="text-white text-lg">{user.userName}</p>
+          </div>
+        ))
+      )}
     </div>
   );
 };
