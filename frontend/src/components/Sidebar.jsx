@@ -50,7 +50,7 @@ const Sidebar = ({
       </div>
 
       <button
-        className="md:hidden absolute top-3 right-2 text-white bg-[#333] p-2 rounded-full"
+        className="md:hidden absolute top-3 right-2 text-white  p-2 "
         onClick={() => setIsSidebarOpen(false)}>
         ✖
       </button>
