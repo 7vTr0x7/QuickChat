@@ -1,9 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 const userProfile = createAsyncThunk("profile/fetch", async () => {
   try {
-    const { data } = await axios.get("http://localhost:4000/api/user/profile");
+    const { data } = await axios.get(`${apiUrl}/api/user/profile`);
     return data;
   } catch (error) {
     console.log("Failed to fetch profile", error.message);

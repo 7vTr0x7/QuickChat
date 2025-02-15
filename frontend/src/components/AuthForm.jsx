@@ -18,6 +18,8 @@ const AuthForm = ({
   const [uploading, setUploading] = useState(false);
 
   const navigate = useNavigate();
+  const uploadPreset = import.meta.env.VITE_UPLOAD_PRESET;
+  const cloudName = import.meta.env.VITE_CLOUD_NAME;
 
   const handleImageUpload = async (e) => {
     const file = e.target.files?.[0];
@@ -26,18 +28,18 @@ const AuthForm = ({
     setUploading(true);
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("upload_preset", "your_upload_preset"); // Replace with your Cloudinary preset
+    formData.append("upload_preset", uploadPreset);
 
     try {
       const response = await fetch(
-        "https://api.cloudinary.com/v1_1/your_cloud_name/image/upload", // Replace with your Cloudinary cloud name
+        `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
         {
           method: "POST",
           body: formData,
         }
       );
       const data = await response.json();
-      setImageUrl(data.secure_url); // Store Cloudinary image URL
+      setImageUrl(data.secure_url);
     } catch (error) {
       console.error("Image upload failed:", error);
     } finally {
