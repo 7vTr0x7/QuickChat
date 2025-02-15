@@ -57,11 +57,16 @@ const ChatWindow = ({ selectedUser, user }) => {
       );
 
       socket.emit("sendMessage", data.chat);
-
       setMessages((prevMessages) => [...prevMessages, data.chat]);
       setMessage("");
     } catch (error) {
       console.error("Failed to send message", error.message);
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      sendMessage();
     }
   };
 
@@ -82,13 +87,12 @@ const ChatWindow = ({ selectedUser, user }) => {
         {messages.map((msg, idx) => (
           <div
             key={idx}
-            className={`p-3 max-w-xs rounded-xl shadow-md mb-2 text-white text-lg 
-                        ${
-                          msg.sender === user._id
-                            ? "bg-[#2a2a2a] ml-auto"
-                            : "bg-[#2a2a2a]"
-                        }
-                        `}>
+            className={`px-3 py-1 w-fit max-w-xs rounded-xl shadow-md mb-2 text-white text-lg 
+              ${
+                msg.sender === user._id
+                  ? "bg-[#2a2a2a] ml-auto"
+                  : "bg-[#2a2a2a]"
+              }`}>
             {msg.message}
           </div>
         ))}
@@ -98,12 +102,13 @@ const ChatWindow = ({ selectedUser, user }) => {
         <input
           value={message}
           onChange={(e) => setMessage(e.target.value)}
+          onKeyDown={handleKeyDown}
           className="flex-1 p-3 rounded-lg bg-[#2a2a2a] text-white outline-none"
           placeholder="Type a message..."
         />
         <button
           onClick={sendMessage}
-          className="ml-3 bg-[#2a2a2a] text-white px-4 py-2 rounded-lg ">
+          className="ml-3 bg-[#2a2a2a] text-white px-4 py-2 rounded-lg">
           Send
         </button>
       </div>
