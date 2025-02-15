@@ -16,6 +16,7 @@ const Sidebar = ({
         credentials: "include",
       });
       if (response.ok) {
+        localStorage.re
         navigate("/");
       } else {
         console.error("Logout failed");
