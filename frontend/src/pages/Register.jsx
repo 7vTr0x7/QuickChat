@@ -41,6 +41,8 @@ const Register = () => {
       const res = await fetch(`${apiUrl}/api/auth/user/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
+
         body: JSON.stringify({ userName, imageUrl, email, password }),
       });
 

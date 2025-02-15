@@ -3,39 +3,39 @@ import axios from "axios";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
-export const userProfile = createAsyncThunk("profile/fetch", async () => {
+export const allUsers = createAsyncThunk("profile/all-users", async () => {
   try {
-    const { data } = await axios.get(`${apiUrl}/api/user/profile`, {
+    const { data } = await axios.get(`${apiUrl}/api/user/all-users`, {
       withCredentials: true,
     });
     return data;
   } catch (error) {
-    console.log("Failed to fetch profile", error.message);
+    console.log("Failed to fetch users", error.message);
   }
 });
 
-export const profileSlice = createSlice({
-  name: "profile",
+export const usersSlice = createSlice({
+  name: "users",
   initialState: {
-    user: null,
+    users: null,
     loading: false,
     error: null,
   },
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(userProfile.pending, (state) => {
+      .addCase(allUsers.pending, (state) => {
         state.loading = true;
       })
-      .addCase(userProfile.fulfilled, (state, action) => {
+      .addCase(allUsers.fulfilled, (state, action) => {
         state.loading = false;
-        state.user = action.payload?.user;
+        state.users = action.payload?.users;
       })
-      .addCase(userProfile.rejected, (state, action) => {
+      .addCase(allUsers.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload?.message;
       });
   },
 });
 
-export default profileSlice.reducer;
+export default usersSlice.reducer;
